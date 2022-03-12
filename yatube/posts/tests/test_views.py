@@ -175,6 +175,7 @@ class PostPagesTests(TestCase):
         response = self.authorized_client.get(reverse('posts:index'))
         self.assertEqual(response_cache, response.content)
 
+
 class FollowPagesTest(TestCase):
     NAME_AUTHOR = 'Bilbo'
     NAME_USER = 'Frodo'
@@ -182,8 +183,12 @@ class FollowPagesTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.author = User.objects.create_user(username=FollowPagesTest.NAME_AUTHOR)
-        cls.user = User.objects.create_user(username=FollowPagesTest.NAME_USER)
+        cls.author = User.objects.create_user(
+            username=FollowPagesTest.NAME_AUTHOR
+        )
+        cls.user = User.objects.create_user(
+            username=FollowPagesTest.NAME_USER
+        )
         cls.new_group = Group.objects.create(
             title='Тестовая группа',
             slug='slug',
