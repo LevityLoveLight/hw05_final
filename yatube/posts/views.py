@@ -9,7 +9,7 @@ from .utils import posts_per_page
 def index(request):
     template = 'posts/index.html'
     post_list= Post.objects.select_related(
-        'author',
+        'author', 
         'group'
     ).all()
     context = {
