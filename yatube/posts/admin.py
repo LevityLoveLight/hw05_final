@@ -16,6 +16,7 @@ class PostAdmin(admin.ModelAdmin):
     list_editable = ('group',)
     empty_value_display = '-пусто-'
 
+
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('pk', 'text', 'created', 'author', 'post')
 
