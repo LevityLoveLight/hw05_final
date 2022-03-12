@@ -14,6 +14,7 @@ def index(request):
     ).all()
     context = {
         'page_obj': posts_per_page(request, post_list),
+        'view_name': 'posts:index',
     }
     return render(request, template, context)
 
@@ -121,6 +122,7 @@ def follow_index(request):
     ).select_related('author', 'group')
     context = {
         'page_obj': posts_per_page(request, posts),
+        'view_name': 'posts:follow_index'
     }
     return render(request, 'posts/follow.html', context)
 

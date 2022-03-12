@@ -1,6 +1,5 @@
 from django.core.paginator import Paginator
 
-
 from yatube import settings
 
 
