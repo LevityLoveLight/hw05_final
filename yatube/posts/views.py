@@ -4,19 +4,17 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CommentForm, PostForm
 from .models import Group, Follow, Post, User, Comment
-
-
-POSTS_0N_PAGE = 10
+from .utils import posts_per_page
 
 
 def index(request):
     template = 'posts/index.html'
-    post_list = Post.objects.all()
-    paginator = Paginator(post_list, POSTS_0N_PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    post_list= Post.objects.select_related(
+        'author',
+        'group'
+    ).all()
     context = {
-        'page_obj': page_obj,
+        'page_obj': posts_per_page(request, post_list),
     }
     return render(request, template, context)
 
@@ -25,12 +23,9 @@ def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     posts = group.posts.all()
     template = 'posts/group_list.html'
-    paginator = Paginator(posts, POSTS_0N_PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
     context = {
         'group': group,
-        'page_obj': page_obj,
+        'page_obj': posts_per_page(request, posts),
     }
     return render(request, template, context)
 
@@ -39,15 +34,12 @@ def profile(request, username):
     author_post = get_object_or_404(User, username=username)
     post_list = author_post.posts.all()
     posts_count = post_list.count()
-    paginator = Paginator(post_list, POSTS_0N_PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
     template = 'posts/profile.html'
     following = request.user.is_authenticated and request.user.follower.filter(
         author=author_post).exists()
     context = {
         'author_post': author_post,
-        'page_obj': page_obj,
+        'page_obj': posts_per_page(request, post_list),
         'following': following,
         'posts_count': posts_count,
     }
@@ -128,11 +120,8 @@ def follow_index(request):
     posts = Post.objects.filter(
         author__following__user=request.user
     ).select_related('author', 'group')
-    paginator = Paginator(posts, POSTS_0N_PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
     context = {
-        'page_obj': page_obj,
+        'page_obj': posts_per_page(request, posts),
     }
     return render(request, 'posts/follow.html', context)
 
