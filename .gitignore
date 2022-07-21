@@ -124,6 +124,7 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+dump.json
 
 # Pyre type checker
 .pyre/
@@ -144,9 +145,4 @@ dmypy.json
 .history/
 
 .mypy_cache
-
-# папки со статикой и медиа
-static/
-yatube/posts/static/
-yatube/media/
 
