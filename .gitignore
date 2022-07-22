@@ -146,3 +146,4 @@ dump.json
 
 .mypy_cache
 
+.htmlcov/
